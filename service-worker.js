@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/reactJS-navetty/precache-manifest.a5b081bf9066707fb33d83352abdcc35.js"
+  "/reactJS-navetty/precache-manifest.ced1a6d6ab74de73e2fc1bacb1cd7686.js"
 );
 
 self.addEventListener('message', (event) => {
