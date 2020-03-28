@@ -74,8 +74,16 @@ function Train(props) {
 
 class TrainLine extends React.Component {
 
-    componentDidMount() {
-        setInterval(() => window.location.reload(), 29000);
+    // componentDidMount() {
+    //     setInterval(() => window.location.reload(), 5000);
+    // }
+
+    // componentDidMount() {
+    //     this.interval = setInterval(() => this.setState({ time: Date.now() }), 5000);
+    // }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     constructor(props) {
@@ -91,13 +99,13 @@ class TrainLine extends React.Component {
 
     handleChange(event) {
         console.log("handleChange passed !!")
-        if(this.state.isFromCP){
+        if (this.state.isFromCP) {
             this.setState({
                 listGare: this.state.listGare.reverse(),
                 isFromCP: !this.state.isFromCP,
                 data: CpToK,
             })
-        }else{
+        } else {
             this.setState({
                 listGare: this.state.listGare.reverse(),
                 isFromCP: !this.state.isFromCP,
@@ -107,7 +115,6 @@ class TrainLine extends React.Component {
     }
 
     renderTrainLine() {
-        console.log("toto = " + this.state.data.lines.length);
         let body = [];
 
         let th = [];
@@ -136,7 +143,30 @@ class TrainLine extends React.Component {
                     horaireDepartGare = this.state.data.lines[j][indiceHoraire + 1];
                 }
                 let mycfCssClass = "circle_front ";
-                if (horaireDepartGare == null) {
+
+                if( (horaireDepartGare != null) && (horaireArriveeGare == null) ){
+                    // Gare de Depart
+                    if (diffFromNow(horaireDepartGare) < 0) {
+                        // Le train est deja parti de la gare
+                        mycfStyle = {
+                            backgroundColor: "gray",
+                        }
+                        myHaStyle = {
+                            color: "lightgrey",
+                        }
+                        horaireArriveeGare = horaireDepartGare;
+                    }else if (diffFromNow(horaireDepartGare) < 1) {
+                        // Le train est en arret a la gare
+                        mycfCssClass = mycfCssClass + "clignote "
+                        mycfStyle = {}
+                        myHaStyle = {}
+                        horaireArriveeGare = horaireDepartGare;
+                    }else{
+                        // Le train n'a pas encore passe par la gare
+                        mycfStyle = {}
+                        myHaStyle = {}
+                    }
+                } else if (horaireDepartGare == null) {
                     // Le train ne feras pas de depart de la gare
                     mycfStyle = {
                         display: "none",
@@ -147,7 +177,7 @@ class TrainLine extends React.Component {
                         display: "none",
                     }
                 } else if (diffFromNow(horaireDepartGare) < 0) {
-                    // Le train a deja parti de la gare
+                    // Le train est deja parti de la gare
                     mycfStyle = {
                         backgroundColor: "gray",
                     }
@@ -193,7 +223,7 @@ class TrainLine extends React.Component {
 
             let horaires = this.state.data.lines[i].slice(0, size);
 
-            for (let index = 1; index < size; index++) {
+            for (let index = 2; index < size; index++) {
                 if (horaires[index] == null) {
                     horaires[index] = horaires[index - 1];
                 }
@@ -208,13 +238,8 @@ class TrainLine extends React.Component {
             let horaireFin = parseInt(horaires[size - 1].replace(":", ""));
 
             let isDisplay = false;
-            let indexGareEncours = -1;
             if ((horaireDebut < now) && (now < horaireFin)) {
                 isDisplay = true;
-            } else if (horaireDebut == now) {
-                indexGareEncours = 0;
-            } else if (horaireFin == now) {
-                indexGareEncours = 10;
             }
 
             if (isDisplay) {
@@ -243,12 +268,9 @@ class TrainLine extends React.Component {
                 }
                 if (!gareEnCoursNonTrouve) {
                     isDisplay = false;
-                    indexGareEncours = d;
                 }
 
                 if (indexGareDepart % 2 == 0) indexGareDepart++;
-                console.log("indexGareDepart[" + i + "] = " + indexGareDepart);
-                console.log("trainMultiple[" + i + "] = " + trainMultiple);
                 cssLeft = 9.1 * (indexGareDepart / 2);
                 cssWidth = cssWidth * trainMultiple;
             }
@@ -317,7 +339,7 @@ class TrainLine extends React.Component {
             zIndex: "3",
         }
         let today = new Date();
-        let minutes = today.getMinutes() < 10 ? "0" + today.getMinutes() : today.getMinutes() ;
+        let minutes = today.getMinutes() < 10 ? "0" + today.getMinutes() : today.getMinutes();
         let now = today.getHours() + ":" + minutes;
         let message = "Données valables depuis 01 Jan. 2020";
 
