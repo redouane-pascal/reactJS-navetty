@@ -78,9 +78,9 @@ class TrainLine extends React.Component {
     //     setInterval(() => window.location.reload(), 5000);
     // }
 
-    // componentDidMount() {
-    //     this.interval = setInterval(() => this.setState({ time: Date.now() }), 5000);
-    // }
+    componentDidMount() {
+        this.interval = setInterval(() => this.setState({ time: Date.now() }), 5000);
+    }
 
     componentWillUnmount() {
         clearInterval(this.interval);
