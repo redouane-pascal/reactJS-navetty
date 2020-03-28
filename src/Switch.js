@@ -15,7 +15,7 @@ const Switch = ({ isFromCP, onChange}) => {
     </label>
     <div className="spanFrom2">From KENITRA</div>
     <div className="aboutMe">
-        <span className="madeBy">Made by
+        <span className="madeBy">Made by &nbsp;
             <a href="https://www.linkedin.com/in/radwanbasqual/" className="authorName">Radwan BASQUAL</a>_2018
         </span>
     </div>

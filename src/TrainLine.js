@@ -165,6 +165,7 @@ class TrainLine extends React.Component {
                         // Le train n'a pas encore passe par la gare
                         mycfStyle = {}
                         myHaStyle = {}
+                        horaireArriveeGare = horaireDepartGare;
                     }
                 } else if (horaireDepartGare == null) {
                     // Le train ne feras pas de depart de la gare
@@ -228,14 +229,21 @@ class TrainLine extends React.Component {
                     horaires[index] = horaires[index - 1];
                 }
             }
-            for (let index = size - 1; index > 0; index--) {
-                if (horaires[index] == null) {
-                    horaires[index] = horaires[index + 1];
+
+            let horaireDebut = "";
+            for (let index = 1; index < size; index++) {
+                if (horaires[index] != null) {
+                    horaireDebut = parseInt(horaires[index].replace(":", ""));
+                    break;
                 }
             }
-
-            let horaireDebut = parseInt(horaires[1].replace(":", ""));
-            let horaireFin = parseInt(horaires[size - 1].replace(":", ""));
+            let horaireFin = "";
+            for (let index = size - 1; index > 0; index--) {
+                if (horaires[index] != null) {
+                    horaireFin = parseInt(horaires[index].replace(":", ""));
+                    break;
+                }
+            }
 
             let isDisplay = false;
             if ((horaireDebut < now) && (now < horaireFin)) {
