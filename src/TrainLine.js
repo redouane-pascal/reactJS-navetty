@@ -5,6 +5,7 @@ import CpToK from './data/lignes_fromCPtoK.json'
 import KToCp from './data/lignes_fromKtoCP.json'
 import Switch from "./Switch";
 
+
 function diffFromNow(myHour) {
     var m = parseInt(myHour.replace(":", ""));
     var d = new Date();
@@ -74,15 +75,20 @@ function Train(props) {
 
 class TrainLine extends React.Component {
 
-    // componentDidMount() {
-    //     setInterval(() => window.location.reload(), 5000);
-    // }
-
+    /**
+     * Add event listener
+     */
     componentDidMount() {
-        this.interval = setInterval(() => this.setState({ time: Date.now() }), 5000);
+        this.handleResize();
+        window.addEventListener("resize", this.handleResize.bind(this));
+        //     this.interval = setInterval(() => this.setState({ time: Date.now() }), 5000);
     }
 
+    /**
+     * Remove event listener
+     */
     componentWillUnmount() {
+        window.removeEventListener("resize", this.handleResize.bind(this));
         clearInterval(this.interval);
     }
 
@@ -94,7 +100,49 @@ class TrainLine extends React.Component {
                 "MOHAMMEDIA", "AIN SEBAA", "CASA PORT"],
             isFromCP: true,
             data: KToCp,
+            screenMode: 1 // 1: large / 2: reduit
         };
+    }
+
+    handleResize() {
+
+        if (this.state.screenMode == 1) {
+            if (window.innerWidth < 1162) {
+                for (let index = 0; index < this.state.data.lines.length; index++) {
+                    if (document.getElementById("numTrain_train" + index)) {
+                        const trainId = "numTrain_train" + index;
+                        let top = Number(document.getElementById(trainId).style.top.replace("px", ""));
+                        top += 15;
+                        document.getElementById("numTrain_train" + index).style.top = top + "px";
+                    }
+                    if (document.getElementById("train" + index)) {
+                        const trainId = "train" + index;
+                        let top = Number(document.getElementById(trainId).style.top.replace("px", ""));
+                        top += 15;
+                        document.getElementById("train" + index).style.top = top + "px";
+                    }
+                }
+                this.state.screenMode = 2;
+            }
+        } else {
+            if (window.innerWidth > 1161) {
+                for (let index = 0; index < this.state.data.lines.length; index++) {
+                    if (document.getElementById("numTrain_train" + index)) {
+                        const trainId = "numTrain_train" + index;
+                        let top = Number(document.getElementById(trainId).style.top.replace("px", ""));
+                        top -= 15;
+                        document.getElementById("numTrain_train" + index).style.top = top + "px";
+                    }
+                    if (document.getElementById("train" + index)) {
+                        const trainId = "train" + index;
+                        let top = Number(document.getElementById(trainId).style.top.replace("px", ""));
+                        top -= 15;
+                        document.getElementById("train" + index).style.top = top + "px";
+                    }
+                }
+                this.state.screenMode = 1;
+            }
+        }
     }
 
     handleChange(event) {
@@ -144,7 +192,7 @@ class TrainLine extends React.Component {
                 }
                 let mycfCssClass = "circle_front ";
 
-                if( (horaireDepartGare != null) && (horaireArriveeGare == null) ){
+                if ((horaireDepartGare != null) && (horaireArriveeGare == null)) {
                     // Gare de Depart
                     if (diffFromNow(horaireDepartGare) < 0) {
                         // Le train est deja parti de la gare
@@ -155,13 +203,13 @@ class TrainLine extends React.Component {
                             color: "lightgrey",
                         }
                         horaireArriveeGare = horaireDepartGare;
-                    }else if (diffFromNow(horaireDepartGare) < 1) {
+                    } else if (diffFromNow(horaireDepartGare) < 1) {
                         // Le train est en arret a la gare
                         mycfCssClass = mycfCssClass + "clignote "
                         mycfStyle = {}
                         myHaStyle = {}
                         horaireArriveeGare = horaireDepartGare;
-                    }else{
+                    } else {
                         // Le train n'a pas encore passe par la gare
                         mycfStyle = {}
                         myHaStyle = {}
@@ -350,6 +398,7 @@ class TrainLine extends React.Component {
         let minutes = today.getMinutes() < 10 ? "0" + today.getMinutes() : today.getMinutes();
         let now = today.getHours() + ":" + minutes;
         let message = "Données valables depuis 01 Jan. 2020";
+
 
         return (
             <div>
