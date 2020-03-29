@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "b2cb37e1e3df10216e60e5b7b0307962",
+    "revision": "891e8c4c04d2eb093074e4e2caf90691",
     "url": "/reactJS-navetty/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/reactJS-navetty/static/css/2.de424728.chunk.css"
   },
   {
-    "revision": "9da61c9b840b3233339e",
+    "revision": "34a7afa4bba29acf6aa5",
     "url": "/reactJS-navetty/static/css/main.f52a43bc.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/reactJS-navetty/static/js/2.8f989c28.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "9da61c9b840b3233339e",
-    "url": "/reactJS-navetty/static/js/main.35e2f2e4.chunk.js"
+    "revision": "34a7afa4bba29acf6aa5",
+    "url": "/reactJS-navetty/static/js/main.7aa2caa8.chunk.js"
   },
   {
     "revision": "a32ba26b71a020440c3d",
